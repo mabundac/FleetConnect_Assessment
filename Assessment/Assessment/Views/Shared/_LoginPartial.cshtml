@@ -1,0 +1,24 @@
+﻿@{
+    var db = new Assessment.Security.FleetConnectEntities();
+    var usr = db.SECURITY_User.Find(Assessment.Security.Helpers.SessionHelpers.LOGGED_IN_USER);
+    ViewBag.Name = Assessment.Security.Helpers.SessionHelpers.LOGGED_IN_USER != null ? usr.FirstName : "";
+}
+
+<center  style="color:white;">
+    @if (Request.IsAuthenticated)
+    {
+        <text>
+        Welcome, @ViewBag.Name
+            @using (Html.BeginForm("LogOff", "Account", new { area = "" }, FormMethod.Post, new { id = "logoutForm" }))
+            {
+                @Html.AntiForgeryToken()
+                <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+            }
+            
+        </text>
+    }
+    else
+    {
+      
+    }
+</center>

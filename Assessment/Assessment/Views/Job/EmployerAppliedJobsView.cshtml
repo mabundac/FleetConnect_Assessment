@@ -1,0 +1,67 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h4><span data-bind="text: pageHeader"></span></h4>
+<br /><br />
+
+<table class="table">
+    <tr>
+        <th>Employee Name</th>
+        <th>Years Of Exp</th>
+        <th>Resume</th>
+        <th>Status</th>
+        <th>Accept</th>
+        <th>Reject</th>
+    </tr>
+    <tbody data-bind="foreach: employerAppliedjobs">
+        <tr>
+            <td data-bind="text: employeeName"></td>
+            <td data-bind="text: yearsOfExperience"></td>
+            <td><a data-bind="attr: { href: downloadUrl, title: employeeName }">Download</a></td>
+            <td data-bind="text: status"></td>
+            <td><input type="button" data-bind="click: $.FCA.page.viewModel.acceptJob, enable: canBeAccepted" class="btn btn-default" value="Accept" /></td>
+            <td><input type="button" data-bind="click: $.FCA.page.viewModel.rejectJob, enable: canBeRejected" class="btn btn-default" value="Reject" /></td>
+        </tr>
+    </tbody>
+</table>
+
+<br /><br />
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <input type="button" class="btn btn-default" value="Back" data-bind="click: backToJobList" />
+
+    </div>
+</div>
+
+<div class="form-group" style="padding-top:50px;">
+    <br />
+    <div data-bind="visible:isSuccessArlet" class="alert alert-success pgray  alert-lg" role="alert">
+        &#10004;<span class="no-margin no-padding" data-bind="text:feedbackMessage"></span>
+    </div>
+    <div data-bind="visible:isErrorArlet" class="alert alert-danger pgray  alert-lg" role="alert">
+        &#10006; &nbsp;<span class="no-margin no-padding" data-bind="text:feedbackMessage"></span>
+    </div>
+    <div data-bind="visible:isWarningArlet" class="alert alert-warning pgray  alert-lg" role="alert">
+        &#10004;<span class="no-margin no-padding" data-bind="text:feedbackMessage"></span>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script src="~/Scripts/views/job/employer-applied-jobs.js"></script>
+
+    <script type="text/javascript">
+        $.FCA.page.links.loadJobListLink = '/Job/GetEmployerAppliedJobs';
+        $.FCA.page.links.saveJobApplicationStatusLink = '/Job/SaveJobApplicationStatus';
+        
+        $(document).ready(function () {
+            $.FCA.page.viewModel = $.FCA.page.createViewModel(@Html.Raw(Json.Encode(Model)));
+            ko.applyBindings($.FCA.page.viewModel);
+
+            $.FCA.page.viewModel.loadEmployerAppliedJobs();
+        });
+
+    </script>
+}
+

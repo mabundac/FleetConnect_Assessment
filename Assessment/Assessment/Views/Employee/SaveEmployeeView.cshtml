@@ -1,0 +1,120 @@
+﻿
+@{
+    ViewBag.Title = "SaveEmployeeView";
+}
+
+
+<h4>Job Seeker Registration</h4>
+<br /><br />
+
+<div class="form-group" style="padding-top:25px;">
+    <label class="col-md-2 control-label">First Name</label>
+    <div class="col-md-10">
+        <p data-bind="css: { 'has-error': firstName.hasError }">
+            <input type="text" class="form-control" data-bind='value: firstName, valueUpdate: "afterkeydown"' />
+            <span style="color:red;" data-bind='visible: firstName.hasError, text: firstName.validationMessage'> </span>
+        </p>
+    </div>
+</div>
+
+<div class="form-group" style="padding-top:25px;">
+    <label class="col-md-2 control-label">Surname</label>
+    <div class="col-md-10">
+        <p data-bind="css: { 'has-error': surname.hasError }">
+            <input type="text" class="form-control" data-bind='value: surname, valueUpdate: "afterkeydown"' />
+            <span style="color:red;" data-bind='visible: surname.hasError, text: surname.validationMessage'> </span>
+        </p>
+    </div>
+</div>
+
+<div class="form-group" style="padding-top:25px;">
+    <label class="col-md-2 control-label">Address</label>
+    <div class="col-md-10">
+        <p data-bind="css: { 'has-error': address.hasError }">
+            <textarea class="form-control" rows="3" data-bind='value: address, valueUpdate: "afterkeydown"'></textarea>
+            <span style="color:red;" data-bind='visible: address.hasError, text: address.validationMessage'> </span>
+        </p>
+    </div>
+</div>
+
+<div class="form-group" style="padding-top:25px;">
+    <label class="col-md-2 control-label">Keywords</label>
+    <div class="col-md-10">
+        <p data-bind="css: { 'has-error': keywords.hasError }">
+            <input type="text" class="form-control" data-bind='value: keywords, valueUpdate: "afterkeydown"' />
+            <span style="color:red;" data-bind='visible: keywords.hasError, text: keywords.validationMessage'> </span>
+        </p>
+    </div>
+</div>
+
+<div class="form-group" style="padding-top:25px;">
+    <label class="col-md-2 control-label">Category</label>
+    <div class="col-md-10">
+        <p data-bind="css: { 'has-error': selectedCategory.hasError }">
+            <select class="form-control selecter"  data-bind='options: categories, value: selectedCategory, optionsCaption: "Select", valueUpdate: "onchange"'></select>
+            <span style="color:red;" data-bind='visible: selectedCategory.hasError, text: selectedCategory.validationMessage'> </span>
+        </p>
+</div>
+</div>
+
+<div class="form-group" style="padding-top:25px;">
+    <label class="col-md-2 control-label">Experience (Years)</label>
+    <div class="col-md-10"> 
+        <p data-bind="css: { 'has-error': selectedYear.hasError }">
+            <select class="form-control selecter"  data-bind='options: yearsOfExperience, value: selectedYear, optionsCaption: "Select", valueUpdate: "onchange"'></select>
+            <span style="color:red;" data-bind='visible: selectedYear.hasError, text: selectedYear.validationMessage'> </span>
+        </p>
+</div>
+</div>
+
+<div class="form-group" style="padding-top:25px;">
+    <label class="col-md-2 control-label">Resume</label>
+    <div class="col-md-10">
+        <input type="file" class="form-control" id="Resume"  accept=".doc, .docx,.pdf"/>
+    </div>
+</div>
+
+<div class="form-group" style="padding-top:50px;">
+    <div class="col-md-offset-2 col-md-10">
+        <input type="button" class="btn btn-default" value="Save" data-bind="click: saveJobSeeker" />
+        <input type="button" class="btn btn-default" value="Cancel"  />
+    </div>
+</div>
+
+<div class="form-group" style="padding-top:50px;" >
+        <br />
+        <div data-bind="visible:isSuccessArlet" class="alert alert-success pgray  alert-lg" role="alert">
+            &#10004;<span class="no-margin no-padding" data-bind="text:feedbackMessage"></span>
+        </div>
+        <div data-bind="visible:isErrorArlet" class="alert alert-danger pgray  alert-lg" role="alert">
+            &#10006; &nbsp;<span class="no-margin no-padding" data-bind="text:feedbackMessage"></span>
+        </div>
+        <div data-bind="visible:isWarningArlet" class="alert alert-warning pgray  alert-lg" role="alert">
+            &#10004;<span class="no-margin no-padding" data-bind="text:feedbackMessage"></span>
+        </div>
+</div>
+
+@section Scripts{
+    <script src="~/Scripts/views/Employee/save-employee.js"></script>
+    <script type="text/javascript">
+        $.FCA.page.links.saveJobSeekerLink = '/Employee/SaveEmployee';
+        $(document).ready(function () {
+            ko.validation.init({ messagesOnModified: true, errorClass: 'errorStyle', insertMessages: true });
+            $.FCA.page.viewModel = $.FCA.page.createViewModel(@Html.Raw(Json.Encode(Model)));
+
+            $.FCA.page.viewModel.errors = ko.validation.group($.FCA.page.viewModel);
+            ko.applyBindings($.FCA.page.viewModel);
+        });
+
+    </script>
+}
+
+<style type="text/css">
+input.wrong-field  {
+  border: 1px solid red;
+}
+span.wrong-field  {
+  color: #FF0000;
+}
+
+</style>

@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="FleetConnectModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="SECURITY_Permission">
+    <Key>
+      <PropertyRef Name="PermissionId" />
+    </Key>
+    <Property Name="PermissionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="GUID" Type="Guid" />
+    <NavigationProperty Name="SECURITY_RolePermission" Relationship="Self.FK_SECURITY_RolePermission_SECURITY_Permission" FromRole="SECURITY_Permission" ToRole="SECURITY_RolePermission" />
+  </EntityType>
+  <EntityType Name="SECURITY_Role">
+    <Key>
+      <PropertyRef Name="RoleId" />
+    </Key>
+    <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="SECURITY_RolePermission" Relationship="Self.FK_SECURITY_RolePermission_SECURITY_Role" FromRole="SECURITY_Role" ToRole="SECURITY_RolePermission" />
+    <NavigationProperty Name="SECURITY_UserRole" Relationship="Self.FK_SECURITY_UserRole_SECURITY_Role" FromRole="SECURITY_Role" ToRole="SECURITY_UserRole" />
+  </EntityType>
+  <EntityType Name="SECURITY_RolePermission">
+    <Key>
+      <PropertyRef Name="RolePermissionId" />
+    </Key>
+    <Property Name="RolePermissionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RoleId" Type="Int32" Nullable="false" />
+    <Property Name="PermissionId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="SECURITY_Permission" Relationship="Self.FK_SECURITY_RolePermission_SECURITY_Permission" FromRole="SECURITY_RolePermission" ToRole="SECURITY_Permission" />
+    <NavigationProperty Name="SECURITY_Role" Relationship="Self.FK_SECURITY_RolePermission_SECURITY_Role" FromRole="SECURITY_RolePermission" ToRole="SECURITY_Role" />
+  </EntityType>
+  <EntityType Name="SECURITY_User">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="EmailAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="LastLogin" Type="DateTime" Precision="3" />
+    <Property Name="IsLocked" Type="Boolean" />
+    <Property Name="Password" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="ResetPassword" Type="Boolean" Nullable="false" />
+    <Property Name="DateAdded" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="SECURITY_UserRole" Relationship="Self.FK_SECURITY_UserRole_SECURITY_User" FromRole="SECURITY_User" ToRole="SECURITY_UserRole" />
+  </EntityType>
+  <EntityType Name="SECURITY_UserRole">
+    <Key>
+      <PropertyRef Name="UserRoleId" />
+    </Key>
+    <Property Name="UserRoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RoleId" Type="Int32" Nullable="false" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="SECURITY_Role" Relationship="Self.FK_SECURITY_UserRole_SECURITY_Role" FromRole="SECURITY_UserRole" ToRole="SECURITY_Role" />
+    <NavigationProperty Name="SECURITY_User" Relationship="Self.FK_SECURITY_UserRole_SECURITY_User" FromRole="SECURITY_UserRole" ToRole="SECURITY_User" />
+  </EntityType>
+  <Association Name="FK_SECURITY_RolePermission_SECURITY_Permission">
+    <End Role="SECURITY_Permission" Type="Self.SECURITY_Permission" Multiplicity="1" />
+    <End Role="SECURITY_RolePermission" Type="Self.SECURITY_RolePermission" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SECURITY_Permission">
+        <PropertyRef Name="PermissionId" />
+      </Principal>
+      <Dependent Role="SECURITY_RolePermission">
+        <PropertyRef Name="PermissionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SECURITY_RolePermission_SECURITY_Role">
+    <End Role="SECURITY_Role" Type="Self.SECURITY_Role" Multiplicity="1" />
+    <End Role="SECURITY_RolePermission" Type="Self.SECURITY_RolePermission" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SECURITY_Role">
+        <PropertyRef Name="RoleId" />
+      </Principal>
+      <Dependent Role="SECURITY_RolePermission">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SECURITY_UserRole_SECURITY_Role">
+    <End Role="SECURITY_Role" Type="Self.SECURITY_Role" Multiplicity="1" />
+    <End Role="SECURITY_UserRole" Type="Self.SECURITY_UserRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SECURITY_Role">
+        <PropertyRef Name="RoleId" />
+      </Principal>
+      <Dependent Role="SECURITY_UserRole">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SECURITY_UserRole_SECURITY_User">
+    <End Role="SECURITY_User" Type="Self.SECURITY_User" Multiplicity="1" />
+    <End Role="SECURITY_UserRole" Type="Self.SECURITY_UserRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SECURITY_User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="SECURITY_UserRole">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="FleetConnectEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="SECURITY_Permission" EntityType="Self.SECURITY_Permission" />
+    <EntitySet Name="SECURITY_Role" EntityType="Self.SECURITY_Role" />
+    <EntitySet Name="SECURITY_RolePermission" EntityType="Self.SECURITY_RolePermission" />
+    <EntitySet Name="SECURITY_User" EntityType="Self.SECURITY_User" />
+    <EntitySet Name="SECURITY_UserRole" EntityType="Self.SECURITY_UserRole" />
+    <AssociationSet Name="FK_SECURITY_RolePermission_SECURITY_Permission" Association="Self.FK_SECURITY_RolePermission_SECURITY_Permission">
+      <End Role="SECURITY_Permission" EntitySet="SECURITY_Permission" />
+      <End Role="SECURITY_RolePermission" EntitySet="SECURITY_RolePermission" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SECURITY_RolePermission_SECURITY_Role" Association="Self.FK_SECURITY_RolePermission_SECURITY_Role">
+      <End Role="SECURITY_Role" EntitySet="SECURITY_Role" />
+      <End Role="SECURITY_RolePermission" EntitySet="SECURITY_RolePermission" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SECURITY_UserRole_SECURITY_Role" Association="Self.FK_SECURITY_UserRole_SECURITY_Role">
+      <End Role="SECURITY_Role" EntitySet="SECURITY_Role" />
+      <End Role="SECURITY_UserRole" EntitySet="SECURITY_UserRole" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SECURITY_UserRole_SECURITY_User" Association="Self.FK_SECURITY_UserRole_SECURITY_User">
+      <End Role="SECURITY_User" EntitySet="SECURITY_User" />
+      <End Role="SECURITY_UserRole" EntitySet="SECURITY_UserRole" />
+    </AssociationSet>
+    <FunctionImport Name="SECURITY_GetPermissionsByRoleID" ReturnType="Collection(FleetConnectModel.SECURITY_GetPermissionsByRoleID_Result)">
+      <Parameter Name="RoleID" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="SECURITY_GetRolePermissionsForTreeview" ReturnType="Collection(FleetConnectModel.SECURITY_GetRolePermissionsForTreeview_Result)">
+      <Parameter Name="roleId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="SECURITY_GetRolesForTreeview" ReturnType="Collection(FleetConnectModel.SECURITY_GetRolesForTreeview_Result)">
+      <Parameter Name="UserId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="SECURITY_GetUserPermissions" ReturnType="Collection(FleetConnectModel.SECURITY_GetUserPermissions_Result)">
+      <Parameter Name="UserID" Mode="In" Type="Int32" />
+    </FunctionImport>
+  </EntityContainer>
+  <ComplexType Name="SECURITY_GetPermissionsByRoleID_Result">
+    <Property Type="Int32" Name="PermissionId" Nullable="false" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Description" Nullable="true" MaxLength="250" />
+    <Property Type="Guid" Name="GUID" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="SECURITY_GetRolePermissionsForTreeview_Result">
+    <Property Type="Int32" Name="PermissionId" Nullable="false" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Description" Nullable="true" MaxLength="250" />
+    <Property Type="Int32" Name="isSelected" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="SECURITY_GetRolesForTreeview_Result">
+    <Property Type="Int32" Name="RoleId" Nullable="true" />
+    <Property Type="String" Name="Name" Nullable="true" MaxLength="500" />
+    <Property Type="String" Name="Description" Nullable="true" MaxLength="500" />
+    <Property Type="Boolean" Name="IsAssigned" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="SECURITY_GetUserPermissions_Result">
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Description" Nullable="true" MaxLength="250" />
+    <Property Type="Guid" Name="GUID" Nullable="true" />
+  </ComplexType>
+</Schema>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="1f760eed22364538a8e53f1764c8066c" Name="Diagram1">
+        <EntityTypeShape EntityType="FleetConnectModel.SECURITY_Permission" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FleetConnectModel.SECURITY_Role" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FleetConnectModel.SECURITY_RolePermission" Width="1.5" PointX="3" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FleetConnectModel.SECURITY_User" Width="1.5" PointX="0.75" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FleetConnectModel.SECURITY_UserRole" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="FleetConnectModel.FK_SECURITY_RolePermission_SECURITY_Permission" ManuallyRouted="false" />
+        <AssociationConnector Association="FleetConnectModel.FK_SECURITY_RolePermission_SECURITY_Role" ManuallyRouted="false" />
+        <AssociationConnector Association="FleetConnectModel.FK_SECURITY_UserRole_SECURITY_Role" ManuallyRouted="false" />
+        <AssociationConnector Association="FleetConnectModel.FK_SECURITY_UserRole_SECURITY_User" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

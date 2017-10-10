@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="FleetConnectModelStoreContainer" CdmEntityContainer="FleetConnectEntities">
+    <EntitySetMapping Name="SECURITY_Permission">
+      <EntityTypeMapping TypeName="FleetConnectModel.SECURITY_Permission">
+        <MappingFragment StoreEntitySet="SECURITY_Permission">
+          <ScalarProperty Name="PermissionId" ColumnName="PermissionId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="GUID" ColumnName="GUID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SECURITY_Role">
+      <EntityTypeMapping TypeName="FleetConnectModel.SECURITY_Role">
+        <MappingFragment StoreEntitySet="SECURITY_Role">
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SECURITY_RolePermission">
+      <EntityTypeMapping TypeName="FleetConnectModel.SECURITY_RolePermission">
+        <MappingFragment StoreEntitySet="SECURITY_RolePermission">
+          <ScalarProperty Name="RolePermissionId" ColumnName="RolePermissionId" />
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+          <ScalarProperty Name="PermissionId" ColumnName="PermissionId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SECURITY_User">
+      <EntityTypeMapping TypeName="FleetConnectModel.SECURITY_User">
+        <MappingFragment StoreEntitySet="SECURITY_User">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+          <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
+          <ScalarProperty Name="IsLocked" ColumnName="IsLocked" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="ResetPassword" ColumnName="ResetPassword" />
+          <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SECURITY_UserRole">
+      <EntityTypeMapping TypeName="FleetConnectModel.SECURITY_UserRole">
+        <MappingFragment StoreEntitySet="SECURITY_UserRole">
+          <ScalarProperty Name="UserRoleId" ColumnName="UserRoleId" />
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="SECURITY_GetPermissionsByRoleID" FunctionName="FleetConnectModel.Store.SECURITY_GetPermissionsByRoleID">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="FleetConnectModel.SECURITY_GetPermissionsByRoleID_Result">
+          <ScalarProperty Name="PermissionId" ColumnName="PermissionId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="GUID" ColumnName="GUID" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="SECURITY_GetRolePermissionsForTreeview" FunctionName="FleetConnectModel.Store.SECURITY_GetRolePermissionsForTreeview">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="FleetConnectModel.SECURITY_GetRolePermissionsForTreeview_Result">
+          <ScalarProperty Name="PermissionId" ColumnName="PermissionId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="isSelected" ColumnName="isSelected" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="SECURITY_GetRolesForTreeview" FunctionName="FleetConnectModel.Store.SECURITY_GetRolesForTreeview">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="FleetConnectModel.SECURITY_GetRolesForTreeview_Result">
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="IsAssigned" ColumnName="IsAssigned" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="SECURITY_GetUserPermissions" FunctionName="FleetConnectModel.Store.SECURITY_GetUserPermissions">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="FleetConnectModel.SECURITY_GetUserPermissions_Result">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="GUID" ColumnName="GUID" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+  </EntityContainerMapping>
+</Mapping>

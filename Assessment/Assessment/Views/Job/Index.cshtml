@@ -1,0 +1,73 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h4>Job Search</h4>
+<br />
+<br />
+
+<div class="form-group">
+  <label class = "col-md-2 control-label">Keywords</label> 
+    <div class="col-md-10">
+       <input type="text" class = "form-control" data-bind="value: keywords" />
+    </div>
+</div>
+<br /><br />
+<div class="form-group">
+    <label class="col-md-2 control-label">Experience (Years)</label>
+    <div class="col-md-10">
+        <select class="form-control selecter" data-bind="options: yearsOfExperience, value: selectedYear, optionsCaption: 'All'"></select>
+    </div>
+</div>
+<br /><br />
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <input type="button" class="btn btn-default" value="Search"  data-bind="click: searchJobs" />
+        <input type="button" class="btn btn-default" value="My Matches" data-bind="click: searchJobsMatchingMyProfile" />
+        <input type="button" class="btn btn-default" value="Cancel" data-bind="click: clearSearch" />
+
+    </div>
+   
+</div>
+
+<br />
+<br/>
+
+<table class="table">
+    <tr>
+        <th>Company Name</th>
+        <th>Years of Exp</th>
+        <th>Title</th>
+        <th></th>
+        <th></th>
+    </tr>
+    <tbody data-bind="foreach: jobList">
+        <tr>
+            <td data-bind="text: companyName"></td>
+            <td data-bind="text: yearsOfExperience"></td>
+            <td data-bind="text: title"></td>
+            <td> <input type="button" data-bind="click: $.FCA.page.viewModel.viewJobDetails" class="btn btn-default" value="View" /></td>
+            <td><span data-bind="visible: alreadyApplied">Already Applied</span>  <input type="button" data-bind="click: $.FCA.page.viewModel.saveEmployeeJob, visible: !alreadyApplied" class="btn btn-default" value="Apply" /></td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+
+@section Scripts{
+<script src="~/Scripts/views/job/job-index.js"></script>
+
+<script type="text/javascript">
+    $.FCA.page.links.loadJobsLink = '/Job/GetJobs';
+    $.FCA.page.links.saveEmployeeJobLink = '/Job/SaveEmployeeJob';
+        $(document).ready(function () {
+            $.FCA.page.viewModel = $.FCA.page.createViewModel(@Html.Raw(Json.Encode(Model)));
+            ko.applyBindings($.FCA.page.viewModel);
+
+            $.FCA.page.viewModel.searchJobs();
+        });
+
+</script>
+}
+

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="1b19755c8ddd4f908fec9df5ef9e1970" Name="Diagram1">
+        <EntityTypeShape EntityType="FleetConnectAssessmentModel.Company" Width="1.5" PointX="5.75" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="FleetConnectAssessmentModel.Employee" Width="1.5" PointX="8" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FleetConnectAssessmentModel.EmployeeJob" Width="1.5" PointX="10.25" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FleetConnectAssessmentModel.Job" Width="1.5" PointX="8" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FleetConnectAssessmentModel.SECURITY_Permission" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FleetConnectAssessmentModel.SECURITY_Role" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FleetConnectAssessmentModel.SECURITY_RolePermission" Width="1.5" PointX="3" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FleetConnectAssessmentModel.SECURITY_User" Width="1.5" PointX="0.75" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FleetConnectAssessmentModel.SECURITY_UserRole" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="FleetConnectAssessmentModel.FK_Job_Company" ManuallyRouted="false" />
+        <AssociationConnector Association="FleetConnectAssessmentModel.FK_EmployeeJob_Employee" ManuallyRouted="false" />
+        <AssociationConnector Association="FleetConnectAssessmentModel.FK_EmployeeJob_Job" ManuallyRouted="false" />
+        <AssociationConnector Association="FleetConnectAssessmentModel.FK_SECURITY_RolePermission_SECURITY_Permission" ManuallyRouted="false" />
+        <AssociationConnector Association="FleetConnectAssessmentModel.FK_SECURITY_RolePermission_SECURITY_Role" ManuallyRouted="false" />
+        <AssociationConnector Association="FleetConnectAssessmentModel.FK_SECURITY_UserRole_SECURITY_Role" ManuallyRouted="false" />
+        <AssociationConnector Association="FleetConnectAssessmentModel.FK_SECURITY_UserRole_SECURITY_User" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="FleetConnectAssessmentModel.vw_AppliedJobs" Width="1.5" PointX="3.375" PointY="6.75" />
+        <EntityTypeShape EntityType="FleetConnectAssessmentModel.vw_EmployeeEmailFromJobApplication" Width="1.5" PointX="5.375" PointY="9.75" />
+        <EntityTypeShape EntityType="FleetConnectAssessmentModel.vw_Jobs" Width="1.5" PointX="7.375" PointY="9.75" />
+        <EntityTypeShape EntityType="FleetConnectAssessmentModel.CompanyUser" Width="1.5" PointX="11" PointY="6.625" />
+        <AssociationConnector Association="FleetConnectAssessmentModel.FK_CompanyUser_CompanyUser" />
+        <AssociationConnector Association="FleetConnectAssessmentModel.FK_CompanyUser_SECURITY_User" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

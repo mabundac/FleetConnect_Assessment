@@ -1,0 +1,345 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="FleetConnectAssessmentModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Company">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Category" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Logo" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <NavigationProperty Name="Jobs" Relationship="Self.FK_Job_Company" FromRole="Company" ToRole="Job" />
+    <NavigationProperty Name="CompanyUsers" Relationship="FleetConnectAssessmentModel.FK_CompanyUser_CompanyUser" FromRole="Company" ToRole="CompanyUser" />
+  </EntityType>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Address" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Category" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Keywords" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Resume" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="YearsOfExperience" Type="Int32" Nullable="false" />
+    <Property Name="UserID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="EmployeeJobs" Relationship="Self.FK_EmployeeJob_Employee" FromRole="Employee" ToRole="EmployeeJob" />
+  </EntityType>
+  <EntityType Name="EmployeeJob">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EmployeeID" Type="Int32" Nullable="false" />
+    <Property Name="JobID" Type="Int32" Nullable="false" />
+    <Property Name="Resume" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+    <Property Name="DateLogged" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Employee" Relationship="Self.FK_EmployeeJob_Employee" FromRole="EmployeeJob" ToRole="Employee" />
+    <NavigationProperty Name="Job" Relationship="Self.FK_EmployeeJob_Job" FromRole="EmployeeJob" ToRole="Job" />
+  </EntityType>
+  <EntityType Name="Job">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="YearsOfExperience" Type="Int32" Nullable="false" />
+    <Property Name="JobDescription" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Keywords" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="Category" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="CompanyID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Company" Relationship="Self.FK_Job_Company" FromRole="Job" ToRole="Company" />
+    <NavigationProperty Name="EmployeeJobs" Relationship="Self.FK_EmployeeJob_Job" FromRole="Job" ToRole="EmployeeJob" />
+  </EntityType>
+  <EntityType Name="SECURITY_Permission">
+    <Key>
+      <PropertyRef Name="PermissionId" />
+    </Key>
+    <Property Name="PermissionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="GUID" Type="Guid" />
+    <NavigationProperty Name="SECURITY_RolePermission" Relationship="Self.FK_SECURITY_RolePermission_SECURITY_Permission" FromRole="SECURITY_Permission" ToRole="SECURITY_RolePermission" />
+  </EntityType>
+  <EntityType Name="SECURITY_Role">
+    <Key>
+      <PropertyRef Name="RoleId" />
+    </Key>
+    <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="SECURITY_RolePermission" Relationship="Self.FK_SECURITY_RolePermission_SECURITY_Role" FromRole="SECURITY_Role" ToRole="SECURITY_RolePermission" />
+    <NavigationProperty Name="SECURITY_UserRole" Relationship="Self.FK_SECURITY_UserRole_SECURITY_Role" FromRole="SECURITY_Role" ToRole="SECURITY_UserRole" />
+  </EntityType>
+  <EntityType Name="SECURITY_RolePermission">
+    <Key>
+      <PropertyRef Name="RolePermissionId" />
+    </Key>
+    <Property Name="RolePermissionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RoleId" Type="Int32" Nullable="false" />
+    <Property Name="PermissionId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="SECURITY_Permission" Relationship="Self.FK_SECURITY_RolePermission_SECURITY_Permission" FromRole="SECURITY_RolePermission" ToRole="SECURITY_Permission" />
+    <NavigationProperty Name="SECURITY_Role" Relationship="Self.FK_SECURITY_RolePermission_SECURITY_Role" FromRole="SECURITY_RolePermission" ToRole="SECURITY_Role" />
+  </EntityType>
+  <EntityType Name="SECURITY_User">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="EmailAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="LastLogin" Type="DateTime" Precision="3" />
+    <Property Name="IsLocked" Type="Boolean" />
+    <Property Name="Password" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="ResetPassword" Type="Boolean" Nullable="false" />
+    <Property Name="DateAdded" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="SECURITY_UserRole" Relationship="Self.FK_SECURITY_UserRole_SECURITY_User" FromRole="SECURITY_User" ToRole="SECURITY_UserRole" />
+    <NavigationProperty Name="CompanyUsers" Relationship="FleetConnectAssessmentModel.FK_CompanyUser_SECURITY_User" FromRole="SECURITY_User" ToRole="CompanyUser" />
+  </EntityType>
+  <EntityType Name="SECURITY_UserRole">
+    <Key>
+      <PropertyRef Name="UserRoleId" />
+    </Key>
+    <Property Name="UserRoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RoleId" Type="Int32" Nullable="false" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="SECURITY_Role" Relationship="Self.FK_SECURITY_UserRole_SECURITY_Role" FromRole="SECURITY_UserRole" ToRole="SECURITY_Role" />
+    <NavigationProperty Name="SECURITY_User" Relationship="Self.FK_SECURITY_UserRole_SECURITY_User" FromRole="SECURITY_UserRole" ToRole="SECURITY_User" />
+  </EntityType>
+  <Association Name="FK_Job_Company">
+    <End Role="Company" Type="Self.Company" Multiplicity="1" />
+    <End Role="Job" Type="Self.Job" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Job">
+        <PropertyRef Name="CompanyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_EmployeeJob_Employee">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="EmployeeJob" Type="Self.EmployeeJob" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="EmployeeJob">
+        <PropertyRef Name="EmployeeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_EmployeeJob_Job">
+    <End Role="Job" Type="Self.Job" Multiplicity="1" />
+    <End Role="EmployeeJob" Type="Self.EmployeeJob" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Job">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="EmployeeJob">
+        <PropertyRef Name="JobID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SECURITY_RolePermission_SECURITY_Permission">
+    <End Role="SECURITY_Permission" Type="Self.SECURITY_Permission" Multiplicity="1" />
+    <End Role="SECURITY_RolePermission" Type="Self.SECURITY_RolePermission" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SECURITY_Permission">
+        <PropertyRef Name="PermissionId" />
+      </Principal>
+      <Dependent Role="SECURITY_RolePermission">
+        <PropertyRef Name="PermissionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SECURITY_RolePermission_SECURITY_Role">
+    <End Role="SECURITY_Role" Type="Self.SECURITY_Role" Multiplicity="1" />
+    <End Role="SECURITY_RolePermission" Type="Self.SECURITY_RolePermission" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SECURITY_Role">
+        <PropertyRef Name="RoleId" />
+      </Principal>
+      <Dependent Role="SECURITY_RolePermission">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SECURITY_UserRole_SECURITY_Role">
+    <End Role="SECURITY_Role" Type="Self.SECURITY_Role" Multiplicity="1" />
+    <End Role="SECURITY_UserRole" Type="Self.SECURITY_UserRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SECURITY_Role">
+        <PropertyRef Name="RoleId" />
+      </Principal>
+      <Dependent Role="SECURITY_UserRole">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SECURITY_UserRole_SECURITY_User">
+    <End Role="SECURITY_User" Type="Self.SECURITY_User" Multiplicity="1" />
+    <End Role="SECURITY_UserRole" Type="Self.SECURITY_UserRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SECURITY_User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="SECURITY_UserRole">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="FleetConnectAssessmentEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Companies" EntityType="Self.Company" />
+    <EntitySet Name="Employees" EntityType="Self.Employee" />
+    <EntitySet Name="EmployeeJobs" EntityType="Self.EmployeeJob" />
+    <EntitySet Name="Jobs" EntityType="Self.Job" />
+    <EntitySet Name="SECURITY_Permission" EntityType="Self.SECURITY_Permission" />
+    <EntitySet Name="SECURITY_Role" EntityType="Self.SECURITY_Role" />
+    <EntitySet Name="SECURITY_RolePermission" EntityType="Self.SECURITY_RolePermission" />
+    <EntitySet Name="SECURITY_User" EntityType="Self.SECURITY_User" />
+    <EntitySet Name="SECURITY_UserRole" EntityType="Self.SECURITY_UserRole" />
+    <AssociationSet Name="FK_Job_Company" Association="Self.FK_Job_Company">
+      <End Role="Company" EntitySet="Companies" />
+      <End Role="Job" EntitySet="Jobs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_EmployeeJob_Employee" Association="Self.FK_EmployeeJob_Employee">
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="EmployeeJob" EntitySet="EmployeeJobs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_EmployeeJob_Job" Association="Self.FK_EmployeeJob_Job">
+      <End Role="Job" EntitySet="Jobs" />
+      <End Role="EmployeeJob" EntitySet="EmployeeJobs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SECURITY_RolePermission_SECURITY_Permission" Association="Self.FK_SECURITY_RolePermission_SECURITY_Permission">
+      <End Role="SECURITY_Permission" EntitySet="SECURITY_Permission" />
+      <End Role="SECURITY_RolePermission" EntitySet="SECURITY_RolePermission" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SECURITY_RolePermission_SECURITY_Role" Association="Self.FK_SECURITY_RolePermission_SECURITY_Role">
+      <End Role="SECURITY_Role" EntitySet="SECURITY_Role" />
+      <End Role="SECURITY_RolePermission" EntitySet="SECURITY_RolePermission" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SECURITY_UserRole_SECURITY_Role" Association="Self.FK_SECURITY_UserRole_SECURITY_Role">
+      <End Role="SECURITY_Role" EntitySet="SECURITY_Role" />
+      <End Role="SECURITY_UserRole" EntitySet="SECURITY_UserRole" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SECURITY_UserRole_SECURITY_User" Association="Self.FK_SECURITY_UserRole_SECURITY_User">
+      <End Role="SECURITY_User" EntitySet="SECURITY_User" />
+      <End Role="SECURITY_UserRole" EntitySet="SECURITY_UserRole" />
+    </AssociationSet>
+    <EntitySet Name="vw_AppliedJobs" EntityType="FleetConnectAssessmentModel.vw_AppliedJobs" />
+    <EntitySet Name="vw_EmployeeEmailFromJobApplication" EntityType="FleetConnectAssessmentModel.vw_EmployeeEmailFromJobApplication" />
+    <EntitySet Name="vw_Jobs" EntityType="FleetConnectAssessmentModel.vw_Jobs" />
+    <EntitySet Name="CompanyUsers" EntityType="FleetConnectAssessmentModel.CompanyUser" />
+    <AssociationSet Name="FK_CompanyUser_CompanyUser" Association="FleetConnectAssessmentModel.FK_CompanyUser_CompanyUser">
+      <End Role="Company" EntitySet="Companies" />
+      <End Role="CompanyUser" EntitySet="CompanyUsers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CompanyUser_SECURITY_User" Association="FleetConnectAssessmentModel.FK_CompanyUser_SECURITY_User">
+      <End Role="SECURITY_User" EntitySet="SECURITY_User" />
+      <End Role="CompanyUser" EntitySet="CompanyUsers" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="vw_AppliedJobs">
+    <Key>
+      <PropertyRef Name="JobID" />
+      <PropertyRef Name="Title" />
+      <PropertyRef Name="JobDescription" />
+      <PropertyRef Name="CompanyID" />
+      <PropertyRef Name="EmployeeJobID" />
+      <PropertyRef Name="EmployeeID" />
+      <PropertyRef Name="Resume" />
+      <PropertyRef Name="DateLogged" />
+      <PropertyRef Name="Name" />
+      <PropertyRef Name="YearsOfExperience" />
+      <PropertyRef Name="Status" />
+    </Key>
+    <Property Name="JobID" Type="Int32" Nullable="false" />
+    <Property Name="Title" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="JobDescription" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="Keywords" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="Category" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="CompanyID" Type="Int32" Nullable="false" />
+    <Property Name="EmployeeJobID" Type="Int32" Nullable="false" />
+    <Property Name="EmployeeID" Type="Int32" Nullable="false" />
+    <Property Name="Resume" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+    <Property Name="DateLogged" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="YearsOfExperience" Type="Int32" Nullable="false" />
+    <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="vw_EmployeeEmailFromJobApplication">
+    <Key>
+      <PropertyRef Name="EmployeeJobID" />
+      <PropertyRef Name="EmployeeID" />
+      <PropertyRef Name="Name" />
+      <PropertyRef Name="JobTitle" />
+      <PropertyRef Name="JobStatus" />
+    </Key>
+    <Property Name="EmployeeJobID" Type="Int32" Nullable="false" />
+    <Property Name="EmployeeID" Type="Int32" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="JobTitle" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="JobStatus" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="vw_Jobs">
+    <Key>
+      <PropertyRef Name="JobID" />
+      <PropertyRef Name="Title" />
+      <PropertyRef Name="YearsOfExperience" />
+      <PropertyRef Name="JobDescription" />
+      <PropertyRef Name="CompanyID" />
+    </Key>
+    <Property Name="JobID" Type="Int32" Nullable="false" />
+    <Property Name="Title" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="YearsOfExperience" Type="Int32" Nullable="false" />
+    <Property Name="JobDescription" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="Keywords" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="Category" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="CompanyID" Type="Int32" Nullable="false" />
+    <Property Name="EmployeeJobID" Type="Int32" />
+    <Property Name="EmployeeID" Type="Int32" />
+    <Property Name="Resume" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="DateLogged" Type="DateTime" Precision="3" />
+    <Property Name="NoOfApplications" Type="Int32" />
+  </EntityType>
+  <EntityType Name="CompanyUser">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserID" Type="Int32" Nullable="false" />
+    <Property Name="CompanyID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Company" Relationship="FleetConnectAssessmentModel.FK_CompanyUser_CompanyUser" FromRole="CompanyUser" ToRole="Company" />
+    <NavigationProperty Name="SECURITY_User" Relationship="FleetConnectAssessmentModel.FK_CompanyUser_SECURITY_User" FromRole="CompanyUser" ToRole="SECURITY_User" />
+  </EntityType>
+  <Association Name="FK_CompanyUser_CompanyUser">
+    <End Type="FleetConnectAssessmentModel.Company" Role="Company" Multiplicity="1" />
+    <End Type="FleetConnectAssessmentModel.CompanyUser" Role="CompanyUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="CompanyUser">
+        <PropertyRef Name="CompanyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CompanyUser_SECURITY_User">
+    <End Type="FleetConnectAssessmentModel.SECURITY_User" Role="SECURITY_User" Multiplicity="1" />
+    <End Type="FleetConnectAssessmentModel.CompanyUser" Role="CompanyUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SECURITY_User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="CompanyUser">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

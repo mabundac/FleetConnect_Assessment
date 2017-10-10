@@ -1,0 +1,77 @@
+﻿
+@{
+    ViewBag.Title = "SaveJobView";
+}
+
+
+<h4>Job Details</h4>
+<br /><br />
+
+<div class="form-group">
+    <label class="col-md-2 control-label">Job Title</label>
+    <div class="col-md-10">
+        <span data-bind='text: jobTitle'> </span>
+    </div>
+</div>
+
+<div class="form-group" style="padding-top:25px;">
+    <label class="col-md-2 control-label">Experience Required</label>
+    <div class="col-md-10">
+        <span data-bind='text: yearsOfExperience'> </span>
+    </div>
+</div>
+
+<div class="form-group" style="padding-top:25px;">
+    <label class="col-md-2 control-label">Description</label>
+    <div class="col-md-10">
+        <span data-bind='text: jobDescription'> </span>
+    </div>
+</div>
+
+<div class="form-group" style="padding-top:25px;">
+    <label class="col-md-2 control-label">Keywords</label>
+    <div class="col-md-10">
+        <span data-bind='text: keywords'> </span>
+    </div>
+</div>
+
+<div class="form-group" style="padding-top:25px;">
+    <label class="col-md-2 control-label">Category</label>
+    <div class="col-md-10">
+        <span data-bind='text: category'> </span>
+    </div>
+</div>
+
+<div class="form-group" style="padding-top:50px;">
+    <div class="col-md-offset-2 col-md-10">
+        <input type="button" class="btn btn-default" value="Apply" data-bind="click: saveEmployeeJob" />
+        <input type="button" class="btn btn-default" value="Back" data-bind="click: cancelSaveEmployeeJob" />
+    </div>
+</div>
+
+<div class="form-group" style="padding-top:50px;">
+    <br />
+    <div data-bind="visible:isSuccessArlet" class="alert alert-success pgray  alert-lg" role="alert">
+        &#10004;<span class="no-margin no-padding" data-bind="text:feedbackMessage"></span>
+    </div>
+    <div data-bind="visible:isErrorArlet" class="alert alert-danger pgray  alert-lg" role="alert">
+        &#10006; &nbsp;<span class="no-margin no-padding" data-bind="text:feedbackMessage"></span>
+    </div>
+    <div data-bind="visible:isWarningArlet" class="alert alert-warning pgray  alert-lg" role="alert">
+        &#10004;<span class="no-margin no-padding" data-bind="text:feedbackMessage"></span>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Scripts/views/job/view-job-details.js"></script>
+    <script type="text/javascript">
+        $.FCA.page.links.saveEmployeeJobLink = '/Job/SaveEmployeeJob';
+        $(document).ready(function () {
+            $.FCA.page.viewModel = $.FCA.page.createViewModel(@Html.Raw(Json.Encode(Model)));
+
+            $.FCA.page.viewModel.errors = ko.validation.group($.FCA.page.viewModel);
+            ko.applyBindings($.FCA.page.viewModel);
+        });
+
+    </script>
+}

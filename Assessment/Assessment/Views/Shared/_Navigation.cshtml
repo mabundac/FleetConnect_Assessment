@@ -1,0 +1,41 @@
+﻿<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            @Html.ActionLink("Fleet Connect Jobs Online", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+        </div>
+        @if(Request.IsAuthenticated)
+        {
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+
+                    @if(Assessment.Security.Helpers.SecurityHelper.HasPermission(Assessment.Security.Permissions.Assessment.CAN_APPLY_FOR_A_JOB))
+                    {
+                        <li>@Html.ActionLink("Jobs", "Index", "Job")</li>
+                    }
+
+                    @if(Assessment.Security.Helpers.SecurityHelper.HasPermission(Assessment.Security.Permissions.Assessment.CAN_SAVE_A_JOB))
+                    {
+                        <li>@Html.ActionLink("New Job", "SaveJobView", "Job")</li>
+                    }
+
+                    @if(Assessment.Security.Helpers.SecurityHelper.HasPermission(Assessment.Security.Permissions.Assessment.CAN_VIEW_A_JOBS_AS_EMPLOYER))
+                    {
+                        <li>@Html.ActionLink("Employer's Job List", "EmployerJobsView", "Job")</li>
+                    }
+
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+       }
+        else
+        {
+            @Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", style="padding-right:20px" })
+            @Html.ActionLink("Register", "SaveUser", "Home")
+        }
+    </div>
+</div>

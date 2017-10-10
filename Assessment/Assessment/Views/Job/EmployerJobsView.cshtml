@@ -1,0 +1,69 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h4>Employer's Job Listing</h4>
+<br />
+<br />
+
+<div class="form-group">
+    <label class="col-md-2 control-label">Keywords</label>
+    <div class="col-md-10">
+        <input type="text" class="form-control" data-bind="value: keywords" />
+    </div>
+</div>
+<br /><br />
+<div class="form-group">
+    <label class="col-md-2 control-label">Experience (Years)</label>
+    <div class="col-md-10">
+        <select class="form-control selecter" data-bind="options: yearsOfExperience, value: selectedYear, optionsCaption: 'All'"></select>
+    </div>
+</div>
+<br /><br />
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <input type="button" class="btn btn-default" value="Search" data-bind="click: searchJobs" />
+        <input type="button" class="btn btn-default" value="Cancel" data-bind="click: clearSearch" />
+
+    </div>
+</div>
+<br /><br />
+
+<table class="table">
+    <tr>
+        <th>Category</th>
+        <th>Applied</th>
+        <th>Years of Exp</th>
+        <th>Title</th>
+        <th></th>
+    </tr>
+    <tbody data-bind="foreach: jobListItems">
+        <tr>
+            <td data-bind="text: category"></td>
+            <td><a data-bind="attr: { href: url, title: jobTitle }"><span data-bind="text: noOfApplications"></span></a></td>
+            <td data-bind="text: yearsOfExperience"></td>
+            <td data-bind="text: jobTitle"></td>
+            <td><input type="button" data-bind="click: $.FCA.page.viewModel.editJob" class="btn btn-default" value="Edit" /></td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+
+@section Scripts{
+    <script src="~/Scripts/views/job/employer-jobs.js"></script>
+
+    <script type="text/javascript">
+    $.FCA.page.links.loadJobListLink = 'GetJobList';
+    ////$.FCA.page.links.saveEmployeeJobLink = '/Job/SaveEmployeeJob';
+        $(document).ready(function () {
+            $.FCA.page.viewModel = $.FCA.page.createViewModel(@Html.Raw(Json.Encode(Model)));
+            ko.applyBindings($.FCA.page.viewModel);
+
+            $.FCA.page.viewModel.searchJobs();
+        });
+
+    </script>
+}
+

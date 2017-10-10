@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    @{Html.RenderPartial("_Head");}
+    <body>
+         <div class="container">
+            <header>
+                @{Html.RenderPartial("_Header");}
+            </header>
+        </div>
+        
+        <div class="container">
+            <div class="row large-spacer"></div>
+            <div class="row">
+                @ViewBag.ErrorMessage    
+            </div>
+            <div class="row large-spacer"></div>
+        </div>
+
+        <div class="container">
+            <footer>
+                @{Html.RenderPartial("_Footer");}
+            </footer>
+        </div>
+    </body>
+</html>
+   

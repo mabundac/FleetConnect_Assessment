@@ -1,0 +1,426 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="FleetConnectModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="SECURITY_Permission">
+          <Key>
+            <PropertyRef Name="PermissionId" />
+          </Key>
+          <Property Name="PermissionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="250" />
+          <Property Name="GUID" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="SECURITY_Role">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="SECURITY_RolePermission">
+          <Key>
+            <PropertyRef Name="RolePermissionId" />
+          </Key>
+          <Property Name="RolePermissionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+          <Property Name="PermissionId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SECURITY_User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EmailAddress" Type="varchar" MaxLength="255" />
+          <Property Name="LastLogin" Type="datetime" />
+          <Property Name="IsLocked" Type="bit" />
+          <Property Name="Password" Type="varchar" MaxLength="250" />
+          <Property Name="ResetPassword" Type="bit" Nullable="false" />
+          <Property Name="DateAdded" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SECURITY_UserRole">
+          <Key>
+            <PropertyRef Name="UserRoleId" />
+          </Key>
+          <Property Name="UserRoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_SECURITY_RolePermission_SECURITY_Permission">
+          <End Role="SECURITY_Permission" Type="Self.SECURITY_Permission" Multiplicity="1" />
+          <End Role="SECURITY_RolePermission" Type="Self.SECURITY_RolePermission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SECURITY_Permission">
+              <PropertyRef Name="PermissionId" />
+            </Principal>
+            <Dependent Role="SECURITY_RolePermission">
+              <PropertyRef Name="PermissionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SECURITY_RolePermission_SECURITY_Role">
+          <End Role="SECURITY_Role" Type="Self.SECURITY_Role" Multiplicity="1" />
+          <End Role="SECURITY_RolePermission" Type="Self.SECURITY_RolePermission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SECURITY_Role">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="SECURITY_RolePermission">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SECURITY_UserRole_SECURITY_Role">
+          <End Role="SECURITY_Role" Type="Self.SECURITY_Role" Multiplicity="1" />
+          <End Role="SECURITY_UserRole" Type="Self.SECURITY_UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SECURITY_Role">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="SECURITY_UserRole">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SECURITY_UserRole_SECURITY_User">
+          <End Role="SECURITY_User" Type="Self.SECURITY_User" Multiplicity="1" />
+          <End Role="SECURITY_UserRole" Type="Self.SECURITY_UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SECURITY_User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="SECURITY_UserRole">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="SECURITY_GetPermissionsByRoleID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RoleID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SECURITY_GetRolePermissionsForTreeview" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="roleId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SECURITY_GetRolesForTreeview" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SECURITY_GetUserPermissions" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserID" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="FleetConnectModelStoreContainer">
+          <EntitySet Name="SECURITY_Permission" EntityType="Self.SECURITY_Permission" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SECURITY_Role" EntityType="Self.SECURITY_Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SECURITY_RolePermission" EntityType="Self.SECURITY_RolePermission" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SECURITY_User" EntityType="Self.SECURITY_User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SECURITY_UserRole" EntityType="Self.SECURITY_UserRole" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_SECURITY_RolePermission_SECURITY_Permission" Association="Self.FK_SECURITY_RolePermission_SECURITY_Permission">
+            <End Role="SECURITY_Permission" EntitySet="SECURITY_Permission" />
+            <End Role="SECURITY_RolePermission" EntitySet="SECURITY_RolePermission" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SECURITY_RolePermission_SECURITY_Role" Association="Self.FK_SECURITY_RolePermission_SECURITY_Role">
+            <End Role="SECURITY_Role" EntitySet="SECURITY_Role" />
+            <End Role="SECURITY_RolePermission" EntitySet="SECURITY_RolePermission" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SECURITY_UserRole_SECURITY_Role" Association="Self.FK_SECURITY_UserRole_SECURITY_Role">
+            <End Role="SECURITY_Role" EntitySet="SECURITY_Role" />
+            <End Role="SECURITY_UserRole" EntitySet="SECURITY_UserRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SECURITY_UserRole_SECURITY_User" Association="Self.FK_SECURITY_UserRole_SECURITY_User">
+            <End Role="SECURITY_User" EntitySet="SECURITY_User" />
+            <End Role="SECURITY_UserRole" EntitySet="SECURITY_UserRole" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FleetConnectModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="SECURITY_Permission">
+          <Key>
+            <PropertyRef Name="PermissionId" />
+          </Key>
+          <Property Name="PermissionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="GUID" Type="Guid" />
+          <NavigationProperty Name="SECURITY_RolePermission" Relationship="Self.FK_SECURITY_RolePermission_SECURITY_Permission" FromRole="SECURITY_Permission" ToRole="SECURITY_RolePermission" />
+        </EntityType>
+        <EntityType Name="SECURITY_Role">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SECURITY_RolePermission" Relationship="Self.FK_SECURITY_RolePermission_SECURITY_Role" FromRole="SECURITY_Role" ToRole="SECURITY_RolePermission" />
+          <NavigationProperty Name="SECURITY_UserRole" Relationship="Self.FK_SECURITY_UserRole_SECURITY_Role" FromRole="SECURITY_Role" ToRole="SECURITY_UserRole" />
+        </EntityType>
+        <EntityType Name="SECURITY_RolePermission">
+          <Key>
+            <PropertyRef Name="RolePermissionId" />
+          </Key>
+          <Property Name="RolePermissionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleId" Type="Int32" Nullable="false" />
+          <Property Name="PermissionId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SECURITY_Permission" Relationship="Self.FK_SECURITY_RolePermission_SECURITY_Permission" FromRole="SECURITY_RolePermission" ToRole="SECURITY_Permission" />
+          <NavigationProperty Name="SECURITY_Role" Relationship="Self.FK_SECURITY_RolePermission_SECURITY_Role" FromRole="SECURITY_RolePermission" ToRole="SECURITY_Role" />
+        </EntityType>
+        <EntityType Name="SECURITY_User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EmailAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="LastLogin" Type="DateTime" Precision="3" />
+          <Property Name="IsLocked" Type="Boolean" />
+          <Property Name="Password" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="ResetPassword" Type="Boolean" Nullable="false" />
+          <Property Name="DateAdded" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="SECURITY_UserRole" Relationship="Self.FK_SECURITY_UserRole_SECURITY_User" FromRole="SECURITY_User" ToRole="SECURITY_UserRole" />
+        </EntityType>
+        <EntityType Name="SECURITY_UserRole">
+          <Key>
+            <PropertyRef Name="UserRoleId" />
+          </Key>
+          <Property Name="UserRoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SECURITY_Role" Relationship="Self.FK_SECURITY_UserRole_SECURITY_Role" FromRole="SECURITY_UserRole" ToRole="SECURITY_Role" />
+          <NavigationProperty Name="SECURITY_User" Relationship="Self.FK_SECURITY_UserRole_SECURITY_User" FromRole="SECURITY_UserRole" ToRole="SECURITY_User" />
+        </EntityType>
+        <Association Name="FK_SECURITY_RolePermission_SECURITY_Permission">
+          <End Role="SECURITY_Permission" Type="Self.SECURITY_Permission" Multiplicity="1" />
+          <End Role="SECURITY_RolePermission" Type="Self.SECURITY_RolePermission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SECURITY_Permission">
+              <PropertyRef Name="PermissionId" />
+            </Principal>
+            <Dependent Role="SECURITY_RolePermission">
+              <PropertyRef Name="PermissionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SECURITY_RolePermission_SECURITY_Role">
+          <End Role="SECURITY_Role" Type="Self.SECURITY_Role" Multiplicity="1" />
+          <End Role="SECURITY_RolePermission" Type="Self.SECURITY_RolePermission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SECURITY_Role">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="SECURITY_RolePermission">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SECURITY_UserRole_SECURITY_Role">
+          <End Role="SECURITY_Role" Type="Self.SECURITY_Role" Multiplicity="1" />
+          <End Role="SECURITY_UserRole" Type="Self.SECURITY_UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SECURITY_Role">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="SECURITY_UserRole">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SECURITY_UserRole_SECURITY_User">
+          <End Role="SECURITY_User" Type="Self.SECURITY_User" Multiplicity="1" />
+          <End Role="SECURITY_UserRole" Type="Self.SECURITY_UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SECURITY_User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="SECURITY_UserRole">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FleetConnectEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="SECURITY_Permission" EntityType="Self.SECURITY_Permission" />
+          <EntitySet Name="SECURITY_Role" EntityType="Self.SECURITY_Role" />
+          <EntitySet Name="SECURITY_RolePermission" EntityType="Self.SECURITY_RolePermission" />
+          <EntitySet Name="SECURITY_User" EntityType="Self.SECURITY_User" />
+          <EntitySet Name="SECURITY_UserRole" EntityType="Self.SECURITY_UserRole" />
+          <AssociationSet Name="FK_SECURITY_RolePermission_SECURITY_Permission" Association="Self.FK_SECURITY_RolePermission_SECURITY_Permission">
+            <End Role="SECURITY_Permission" EntitySet="SECURITY_Permission" />
+            <End Role="SECURITY_RolePermission" EntitySet="SECURITY_RolePermission" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SECURITY_RolePermission_SECURITY_Role" Association="Self.FK_SECURITY_RolePermission_SECURITY_Role">
+            <End Role="SECURITY_Role" EntitySet="SECURITY_Role" />
+            <End Role="SECURITY_RolePermission" EntitySet="SECURITY_RolePermission" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SECURITY_UserRole_SECURITY_Role" Association="Self.FK_SECURITY_UserRole_SECURITY_Role">
+            <End Role="SECURITY_Role" EntitySet="SECURITY_Role" />
+            <End Role="SECURITY_UserRole" EntitySet="SECURITY_UserRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SECURITY_UserRole_SECURITY_User" Association="Self.FK_SECURITY_UserRole_SECURITY_User">
+            <End Role="SECURITY_User" EntitySet="SECURITY_User" />
+            <End Role="SECURITY_UserRole" EntitySet="SECURITY_UserRole" />
+          </AssociationSet>
+          <FunctionImport Name="SECURITY_GetPermissionsByRoleID" ReturnType="Collection(FleetConnectModel.SECURITY_GetPermissionsByRoleID_Result)">
+            <Parameter Name="RoleID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SECURITY_GetRolePermissionsForTreeview" ReturnType="Collection(FleetConnectModel.SECURITY_GetRolePermissionsForTreeview_Result)">
+            <Parameter Name="roleId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SECURITY_GetRolesForTreeview" ReturnType="Collection(FleetConnectModel.SECURITY_GetRolesForTreeview_Result)">
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SECURITY_GetUserPermissions" ReturnType="Collection(FleetConnectModel.SECURITY_GetUserPermissions_Result)">
+            <Parameter Name="UserID" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="SECURITY_GetPermissionsByRoleID_Result">
+          <Property Type="Int32" Name="PermissionId" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="250" />
+          <Property Type="Guid" Name="GUID" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="SECURITY_GetRolePermissionsForTreeview_Result">
+          <Property Type="Int32" Name="PermissionId" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="250" />
+          <Property Type="Int32" Name="isSelected" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="SECURITY_GetRolesForTreeview_Result">
+          <Property Type="Int32" Name="RoleId" Nullable="true" />
+          <Property Type="String" Name="Name" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="500" />
+          <Property Type="Boolean" Name="IsAssigned" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="SECURITY_GetUserPermissions_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="250" />
+          <Property Type="Guid" Name="GUID" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FleetConnectModelStoreContainer" CdmEntityContainer="FleetConnectEntities">
+          <EntitySetMapping Name="SECURITY_Permission">
+            <EntityTypeMapping TypeName="FleetConnectModel.SECURITY_Permission">
+              <MappingFragment StoreEntitySet="SECURITY_Permission">
+                <ScalarProperty Name="PermissionId" ColumnName="PermissionId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="GUID" ColumnName="GUID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SECURITY_Role">
+            <EntityTypeMapping TypeName="FleetConnectModel.SECURITY_Role">
+              <MappingFragment StoreEntitySet="SECURITY_Role">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SECURITY_RolePermission">
+            <EntityTypeMapping TypeName="FleetConnectModel.SECURITY_RolePermission">
+              <MappingFragment StoreEntitySet="SECURITY_RolePermission">
+                <ScalarProperty Name="RolePermissionId" ColumnName="RolePermissionId" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="PermissionId" ColumnName="PermissionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SECURITY_User">
+            <EntityTypeMapping TypeName="FleetConnectModel.SECURITY_User">
+              <MappingFragment StoreEntitySet="SECURITY_User">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
+                <ScalarProperty Name="IsLocked" ColumnName="IsLocked" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="ResetPassword" ColumnName="ResetPassword" />
+                <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SECURITY_UserRole">
+            <EntityTypeMapping TypeName="FleetConnectModel.SECURITY_UserRole">
+              <MappingFragment StoreEntitySet="SECURITY_UserRole">
+                <ScalarProperty Name="UserRoleId" ColumnName="UserRoleId" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SECURITY_GetPermissionsByRoleID" FunctionName="FleetConnectModel.Store.SECURITY_GetPermissionsByRoleID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="FleetConnectModel.SECURITY_GetPermissionsByRoleID_Result">
+                <ScalarProperty Name="PermissionId" ColumnName="PermissionId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="GUID" ColumnName="GUID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SECURITY_GetRolePermissionsForTreeview" FunctionName="FleetConnectModel.Store.SECURITY_GetRolePermissionsForTreeview">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="FleetConnectModel.SECURITY_GetRolePermissionsForTreeview_Result">
+                <ScalarProperty Name="PermissionId" ColumnName="PermissionId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="isSelected" ColumnName="isSelected" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SECURITY_GetRolesForTreeview" FunctionName="FleetConnectModel.Store.SECURITY_GetRolesForTreeview">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="FleetConnectModel.SECURITY_GetRolesForTreeview_Result">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="IsAssigned" ColumnName="IsAssigned" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SECURITY_GetUserPermissions" FunctionName="FleetConnectModel.Store.SECURITY_GetUserPermissions">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="FleetConnectModel.SECURITY_GetUserPermissions_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="GUID" ColumnName="GUID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
